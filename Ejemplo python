@@ -1,0 +1,11 @@
+#ejemplo de clase en python
+class Persona:
+    def __init__(self, nombre, edad):
+        self.nombre = nombre
+        self.edad = edad
+
+    def info(self):
+        return f"Nombre: {self.nombre}, Edad: {self.edad}"
+
+persona1 = Persona("Carlos", 25)
+print(persona1.info())
