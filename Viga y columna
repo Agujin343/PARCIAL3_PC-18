@@ -1,0 +1,84 @@
+#Clase para repreentar el elemento estructural de una construccion
+class Ele_Estructural:
+    def __init__(self, material, largo, carga):
+        self.material = material #Se refiere al material del elementos, como hormigon o acero
+        self.largo = largo #longitud que posee el elemento en metros
+        self.carga = carga #carga aplicada al objeto en kN
+
+    def mostrar_info(self):
+        # Se retorna la informacion del elemento estructural a procesar
+        # se cambio self.fuerza por self.carga
+        return f"Elemento: Material: {self.material}, Largo: {self.largo} m, Fuerza: {self.carga} kN"
+
+    def calcular_factor_seguridad(self):
+        # Calcula un factor de seguridad de manera simplificada.
+        #se usa una formula simplificada para el ejemplo: (largo*10) / carga
+        factor_seguridad = (self.largo * 10) / self.carga 
+        return factor_seguridad
+
+
+#Se crea la clase referente a una viga, siendo esta parte de los elementos estructurales
+class Viga(Ele_Estructural):
+    def __init__(self, material, largo, carga, categoria):
+        # en cateogoria se indicara el tipo de viga a utilizar.
+        super().__init__(material, largo, carga)
+        self.categoria = categoria  
+
+    def mostrar_info(self):
+        # Se retorna la informacion de la viga a procesar.
+        # se cambio self.fuerza por self.carga
+        return f"Viga: {self.categoria}, Material: {self.material}, Largo: {self.largo} m, Fuerza: {self.carga} kN"
+
+    def calcular_deflexion(self):
+        #se calcula la deflexion de la viga usando: (carga * (largo)^3) / 1000.
+        # se cambio self.fuerza por self.carga
+        deflexion = (self.carga * self.largo ** 3) / 1000 
+        return deflexion
+
+
+#Se crea la clase referente a una columna, siendo esta parte de los elementos estructurales
+class Columna(Ele_Estructural):
+    def __init__(self, material, largo, carga, seccion):
+           # en seccion se refiere al area transversal de la columna en metros cuadrados.
+        super().__init__(material, largo, carga)
+        self.seccion = seccion  
+
+    def mostrar_info(self):
+        # Se retorna la informacion de la columna a procesar.
+        return f"Columna: Material: {self.material}, Largo: {self.largo} m, Fuerza: {self.carga} kN, Sección: {self.seccion} m²"
+
+    def calcular_esbeltez(self):
+        #Se calcula el indice de esbletez de la columna usando: largo/ (raiz cuadrada de seccion)
+        esbeltez = self.largo / (self.seccion ** 0.5) 
+        return esbeltez
+
+
+# Se toman los datos por medio de inputs, ademas de agregar float cuando 
+# se trate de un numero necesario para los calculos
+
+print("Ingrese los datos para la Viga:")
+mat_viga = input("Material de la viga (ej. Hormigón armado): ")
+largo_viga = float(input("Largo de la viga (en metros): "))
+carga_viga = float(input("Carga aplicada a la viga (en kN): "))
+cat_viga = input("Categoría de la viga (ej. simple o compuesta): ")
+
+# Solicitar datos para la columna
+print("\nIngrese los datos para la Columna:")
+mat_col = input("Material de la columna (ej. Acero): ")
+largo_col = float(input("Largo de la columna (en metros): "))
+carga_col = float(input("Carga aplicada a la columna (en kN): "))
+area_col = float(input("Área de la sección de la columna (en m²): "))
+
+# Guardar objetos para almacenar la información ingresada
+mi_viga = Viga(mat_viga, largo_viga, carga_viga, cat_viga)
+mi_columna = Columna(mat_col, largo_col, carga_col, area_col)
+
+# Mostrar la información y resultados de los cálculos para la viga.
+print("\nInformación de la Viga:")
+print(mi_viga.mostrar_info())
+print(f"Deflexión estimada: {mi_viga.calcular_deflexion():.2f} unidades")
+
+# Mostrar la información y resultados de los cálculos para la columna.
+print("\nInformación de la Columna:")
+print(mi_columna.mostrar_info())
+print(f"Esbeltez calculada: {mi_columna.calcular_esbeltez():.2f}")
